@@ -40,4 +40,5 @@ Make sure you have the following installed:
    To run the application in the development mode run the following command:
    ```bash
    npm start
-    Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
