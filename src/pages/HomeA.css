@@ -8,6 +8,81 @@
     padding: 0;
 }
 
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-buttons button {
+    padding: 10px 15px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.form-buttons button[type='button'] {
+    background: #f44336;
+}
+
+.profile-pic-preview {
+    margin-top: 10px;
+}
+
+.profile-pic-preview img {
+    border-radius: 50%;
+}
+
+.progress-bar-container {
+    margin: 15px 0;
+}
+
+.progress-bar {
+    height: 10px;
+    background: #4caf50;
+    border-radius: 5px;
+    transition: width 0.2s ease;
+}
+
 .greeting-banner {
     background: url("/public/assets/greeting_banner.png") no-repeat center center/cover;
     color: #ffffff;
@@ -18,9 +93,11 @@
     width: 90%;
     margin-top: 25px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-size: cover; /* Ensures the background image covers the entire div */
+    background-size: cover;
+    /* Ensures the background image covers the entire div */
     background-position: center;
-    max-width: 1200px; /* Optional: limits the max width for larger screens */
+    max-width: 1200px;
+    /* Optional: limits the max width for larger screens */
 }
 
 .greeting-banner h2 {
@@ -38,53 +115,75 @@
 }
 
 /* Ensure the container doesn't overflow horizontally */
-body, html {
+body,
+html {
     overflow-x: hidden;
 }
 
 .homeA__content {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
-    gap: 20px; /* Space between the cards */
-    padding: 20px; /* Optional padding around the container */
-    max-width: 1200px; /* Optional max-width to limit the container's width */
-    margin: 0 auto; /* Centers the container within the parent */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* Responsive columns */
+    gap: 20px;
+    /* Space between the cards */
+    padding: 20px;
+    /* Optional padding around the container */
+    max-width: 1200px;
+    /* Optional max-width to limit the container's width */
+    margin: 0 auto;
+    /* Centers the container within the parent */
 }
 
 .event__card {
     width: 500px;
-    max-width: 400px; /* Adjust the maximum width of the card */
-    background-color: #ffffff; /* White background for the card */
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    max-width: 400px;
+    /* Adjust the maximum width of the card */
+    background-color: #ffffff;
+    /* White background for the card */
+    border-radius: 12px;
+    /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
     padding: 20px;
-    margin: 20px auto; /* Center the card with auto margins */
-    font-family: 'Poppins', sans-serif; /* Professional font */
-    color: #333333; /* Dark text color */
-    text-align: center; /* Center the content */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    margin: 20px auto;
+    /* Center the card with auto margins */
+    font-family: 'Poppins', sans-serif;
+    /* Professional font */
+    color: #333333;
+    /* Dark text color */
+    text-align: center;
+    /* Center the content */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Smooth hover effect */
     height: 500px;
     overflow: auto;
 }
 
 /* Webkit-based browsers (Chrome, Safari, Edge) */
 .event__card::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar */
+    width: 10px;
+    /* Width of the scrollbar */
 }
 
 .event__card::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background color of the scrollbar track */
-    border-radius: 10px; /* Rounded corners for the track */
+    background: #f1f1f1;
+    /* Background color of the scrollbar track */
+    border-radius: 10px;
+    /* Rounded corners for the track */
 }
 
 .event__card::-webkit-scrollbar-thumb {
-    background-color: #4A90E2; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the thumb */
-    border: 2px solid #ffffff; /* Adds a white border around the thumb */
+    background-color: #4A90E2;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the thumb */
+    border: 2px solid #ffffff;
+    /* Adds a white border around the thumb */
 }
 
 .event__card::-webkit-scrollbar-thumb:hover {
-    background-color: #357ABD; /* Darker color on hover */
+    background-color: #357ABD;
+    /* Darker color on hover */
 }
 
 /* Firefox */
@@ -94,11 +193,13 @@ body, html {
 
 /* IE and Edge */
 .event__card {
-    -ms-overflow-style: none; /* Hide default scrollbar */
+    -ms-overflow-style: none;
+    /* Hide default scrollbar */
 }
 
 .event__card::-ms-scrollbar {
-    display: none; /* Hide scrollbar in IE and Edge */
+    display: none;
+    /* Hide scrollbar in IE and Edge */
 }
 
 
@@ -124,10 +225,13 @@ body, html {
 }
 
 .event__card .eventList button {
-    background-color: #4A90E2; /* Theme color for the button */
-    color: #ffffff; /* White text */
+    background-color: #4A90E2;
+    /* Theme color for the button */
+    color: #ffffff;
+    /* White text */
     border: none;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 8px;
+    /* Rounded corners */
     padding: 8px 16px;
     font-size: 16px;
     font-weight: 600;
@@ -136,30 +240,41 @@ body, html {
 }
 
 .event__card .eventList button:hover {
-    background-color: #357ABD; /* Darker blue on hover */
+    background-color: #357ABD;
+    /* Darker blue on hover */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .event__card {
-        max-width: 90%; /* Adjust card width for smaller screens */
+        max-width: 90%;
+        /* Adjust card width for smaller screens */
     }
 }
 
 .recommendation__card {
-    position: relative; /* Needed for absolutely positioning the sponsored tag */
+    position: relative;
+    /* Needed for absolutely positioning the sponsored tag */
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff; /* White background for the card */
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    max-width: 500px; /* Set maximum width */
+    background-color: #ffffff;
+    /* White background for the card */
+    border-radius: 12px;
+    /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    max-width: 500px;
+    /* Set maximum width */
     margin: 20px;
-    overflow: hidden; /* Prevent content overflow */
-    font-family: 'Poppins', sans-serif; /* Professional font */
-    color: #333333; /* Dark text color */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    overflow: hidden;
+    /* Prevent content overflow */
+    font-family: 'Poppins', sans-serif;
+    /* Professional font */
+    color: #333333;
+    /* Dark text color */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Smooth hover effect */
 }
 
 .sponsored__tag {
@@ -167,52 +282,66 @@ body, html {
     top: 180px;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black tint */
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black tint */
     color: white;
     text-align: center;
     padding: 8px 0;
     font-size: 14px;
     font-weight: 600;
-    z-index: 10; /* Ensure it stays on top of the image */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow above the tag */
+    z-index: 10;
+    /* Ensure it stays on top of the image */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow above the tag */
 }
 
 .recommendation__card:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+    transform: translateY(-5px);
+    /* Lift effect on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    /* Stronger shadow on hover */
 }
 
 .event__image {
     width: 100%;
-    height: 180px; /* Fixed height for the image */
-    object-fit: cover; /* Ensure image covers the div without distortion */
+    height: 180px;
+    /* Fixed height for the image */
+    object-fit: cover;
+    /* Ensure image covers the div without distortion */
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
 
 .event__details {
-    padding: 20px; /* Padding around the text */
-    text-align: center; /* Center-align text */
+    padding: 20px;
+    /* Padding around the text */
+    text-align: center;
+    /* Center-align text */
 }
 
 .event__details h2 {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #4A90E2; /* Theme color for the title */
+    color: #4A90E2;
+    /* Theme color for the title */
 }
 
 .event__details p {
     font-size: 14px;
     margin-bottom: 10px;
-    color: #666666; /* Slightly lighter text for the details */
+    color: #666666;
+    /* Slightly lighter text for the details */
 }
 
 .event__button {
-    background-color: #4A90E2; /* Theme color for the button */
-    color: #ffffff; /* White text */
+    background-color: #4A90E2;
+    /* Theme color for the button */
+    color: #ffffff;
+    /* White text */
     border: none;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 8px;
+    /* Rounded corners */
     padding: 10px 20px;
     font-size: 16px;
     font-weight: 600;
@@ -221,63 +350,85 @@ body, html {
 }
 
 .event__button:hover {
-    background-color: #357ABD; /* Darker blue on hover */
+    background-color: #357ABD;
+    /* Darker blue on hover */
 }
 
 .popular__card {
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff; /* White background for the card */
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: #ffffff;
+    /* White background for the card */
+    border-radius: 12px;
+    /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
     min-width: 350px;
-    max-width: 400px; /* Set maximum width */
-    margin: 20px auto; /* Center the card */
-    overflow: hidden; /* Prevent content overflow */
-    font-family: 'Poppins', sans-serif; /* Professional font */
-    color: #333333; /* Dark text color */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
-    text-align: left; /* Align text to the left */
+    max-width: 400px;
+    /* Set maximum width */
+    margin: 20px auto;
+    /* Center the card */
+    overflow: hidden;
+    /* Prevent content overflow */
+    font-family: 'Poppins', sans-serif;
+    /* Professional font */
+    color: #333333;
+    /* Dark text color */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Smooth hover effect */
+    text-align: left;
+    /* Align text to the left */
     height: 500px;
 }
 
 .popular__card:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+    transform: translateY(-5px);
+    /* Lift effect on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    /* Stronger shadow on hover */
 }
 
 .event__image {
     width: 100%;
-    height: 200px; /* Fixed height for the image */
-    object-fit: cover; /* Ensure image covers the div without distortion */
+    height: 200px;
+    /* Fixed height for the image */
+    object-fit: cover;
+    /* Ensure image covers the div without distortion */
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
 
 .event__info {
-    padding: 20px; /* Padding around the text */
+    padding: 20px;
+    /* Padding around the text */
 }
 
 .event__info h2 {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 15px;
-    color: #4A90E2; /* Theme color for the title */
+    color: #4A90E2;
+    /* Theme color for the title */
 }
 
 .event__info p {
     font-size: 16px;
     margin-bottom: 20px;
-    color: #666666; /* Slightly lighter text for the details */
-    line-height: 1.5; /* Improve readability */
+    color: #666666;
+    /* Slightly lighter text for the details */
+    line-height: 1.5;
+    /* Improve readability */
 }
 
 .event__button {
-    background-color: #4A90E2; /* Theme color for the button */
-    color: #ffffff; /* White text */
+    background-color: #4A90E2;
+    /* Theme color for the button */
+    color: #ffffff;
+    /* White text */
     border: none;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 8px;
+    /* Rounded corners */
     padding: 10px 20px;
     font-size: 16px;
     font-weight: 600;
@@ -286,7 +437,8 @@ body, html {
 }
 
 .event__button:hover {
-    background-color: #357ABD; /* Darker blue on hover */
+    background-color: #357ABD;
+    /* Darker blue on hover */
 }
 
 .event__reminders {

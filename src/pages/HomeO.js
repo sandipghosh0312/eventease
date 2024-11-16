@@ -9,8 +9,9 @@ import 'chart.js/auto';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import InsightsIcon from '@mui/icons-material/Insights';
 import AdUnitsIcon from '@mui/icons-material/AdUnits';
-import { auth, db } from "../firebase";
-import { collection, query, where, getDocs, getDoc, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { auth, db, storage } from "../firebase";
+import { collection, query, where, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 function HomeO() {
     const [eventsAttended, setEventsAttended] = useState(0);
@@ -27,6 +28,202 @@ function HomeO() {
     const user = auth?.currentUser;
     const [registrations, setRegistrations] = useState([]);
     const eventsCollection = collection(db, 'events');
+    const [name, setName] = useState('');
+    const [profilePic, setProfilePic] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [error, setError] = useState('');
+    const [role, setRole] = useState("");
+    const [teamMembers, setTeamMembers] = useState([]);
+    const [selectedMemberId, setSelectedMemberId] = useState(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setName('');
+        setProfilePic(null);
+        setError('');
+        setUploadProgress(0);
+    };
+
+    const handleProfilePicChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfilePic(file);
+        }
+    };
+
+    // Handle form submission
+    const handleSubmitData = async (event) => {
+        event.preventDefault();
+        if (!name || !profilePic) {
+            setError('Please provide both name and profile picture.');
+            return;
+        }
+
+        setUploading(true);
+        setError('');
+
+        try {
+            // Step 1: Upload profile picture to Firebase Storage
+            const storageRef = ref(storage, `profile-pictures/${profilePic.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, profilePic);
+
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    // Calculate upload progress
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setUploadProgress(progress);
+                },
+                (error) => {
+                    setUploading(false);
+                    setError(error.message);
+                },
+                async () => {
+                    // Step 2: Get download URL after upload completes
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+                    // Step 3: Save member data to Firestore
+                    const user = auth.currentUser;
+                    if (!user) {
+                        setError('User is not authenticated.');
+                        setUploading(false);
+                        return;
+                    }
+
+                    const userRef = doc(db, 'organizers', user.uid); // Reference to user's document
+                    const teamMembersRef = collection(userRef, 'team-members'); // Reference to 'team-members' collection
+
+                    await setDoc(doc(teamMembersRef), {
+                        name,
+                        profilePicURL: downloadURL,
+                        createdAt: new Date(),
+                        role: '',
+                    });
+
+                    console.log('New Member added:', { name, profilePicURL: downloadURL });
+
+                    // Reset state and close modal
+                    setName('');
+                    setProfilePic(null);
+                    setUploading(false);
+                    setUploadProgress(0);
+                    closeModal();
+                }
+            );
+        } catch (error) {
+            setUploading(false);
+            setError('Failed to upload member: ' + error.message);
+        }
+    };
+
+    // Fetch team members from Firestore
+    const fetchTeamMembers = async () => {
+        try {
+            const user = auth.currentUser;
+            if (!user) {
+                console.error('User not authenticated');
+                return;
+            }
+
+            const userRef = doc(db, 'organizers', user.uid);
+            const teamMembersRef = collection(userRef, 'team-members');
+            const snapshot = await getDocs(teamMembersRef);
+
+            const membersData = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            setTeamMembers(membersData);
+        } catch (error) {
+            console.error('Error fetching team members:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchTeamMembers();
+    }, []);
+
+    const openEditModal = (memberId) => {
+        setSelectedMemberId(memberId);
+        setIsEditModalOpen(true);
+    };
+
+    const closeEditModal = () => {
+        setSelectedMemberId(null);
+        setIsEditModalOpen(false);
+    };
+
+    const handleUpdateTeamMember = async (e) => {
+        e.preventDefault();
+
+        if (!name || !role) {
+            setError('Please provide both name and role.');
+            return;
+        }
+
+        setUploading(true);
+        setError('');
+
+        try {
+            if (name && !role) {
+                // Update the member's data in Firestore
+                const userRef = doc(db, 'organizers', user?.uid, 'team-members', selectedMemberId);
+                await updateDoc(userRef, {
+                    name,
+                });
+            } else if (role && !name) {
+                // Update the member's data in Firestore
+                const userRef = doc(db, 'organizers', user?.uid, 'team-members', selectedMemberId);
+                await updateDoc(userRef, {
+                    role,
+                });
+            } else {
+                // Update the member's data in Firestore
+                const userRef = doc(db, 'organizers', user?.uid, 'team-members', selectedMemberId);
+                await updateDoc(userRef, {
+                    name,
+                    role,
+                });
+            }
+
+            // Reset states and close modal
+            setUploading(false);
+            setUploadProgress(0);
+            closeEditModal();
+        } catch (error) {
+            setUploading(false);
+            setError('Error updating member: ' + error.message);
+        }
+    };
+
+    const handleRemoveMember = async (memberId) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this team member?');
+        if (confirmDelete) {
+          try {
+            // Reference to the team member's document
+            const memberRef = doc(db, 'organizers', 'userUid', 'team-members', memberId); // Replace 'userUid' with actual user's UID
+            
+            // Delete the document
+            await deleteDoc(memberRef);
+    
+            // Update the state by filtering out the deleted member
+            setTeamMembers((prevMembers) => prevMembers.filter((member) => member.id !== memberId));
+    
+            alert('Team member deleted successfully.');
+          } catch (error) {
+            console.error('Error deleting team member:', error);
+            alert('Failed to delete the team member. Please try again.');
+          }
+        }
+      };
+
+
 
     useEffect(() => {
         // Fetch pending registrations when the component mounts
@@ -53,7 +250,7 @@ function HomeO() {
                         });
                     }
                 }
-                
+
                 setRegistrations(fetchedRegistrations);
             } catch (error) {
                 console.error("Error fetching registrations:", error);
@@ -76,12 +273,12 @@ function HomeO() {
                 uid: registration.uid,
                 email: registration.email,
             });
-        }catch (error) {
+        } catch (error) {
             console.error("Error registering the user:", error);
             return;
         }
-        
-        try {   
+
+        try {
             // Remove from pending registrations
             const pendingRegistrationRef = doc(db, 'events', registration.eventId, 'pending-registration', registration.id);
             await deleteDoc(pendingRegistrationRef).then(() => {
@@ -89,7 +286,7 @@ function HomeO() {
             }).catch((e) => {
                 alert(e.message())
             })
-            
+
 
             // Update the UI
             setRegistrations(prev => prev.filter(reg => reg.id !== registration.id));
@@ -325,6 +522,103 @@ function HomeO() {
 
     return (
         <div className="homeO">
+
+            {
+                isEditModalOpen && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <h2>Edit Team Member</h2>
+                            <form onSubmit={handleUpdateTeamMember}>
+                                <div className="form-group">
+                                    <label htmlFor="name">Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        placeholder="Enter member's name"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="role">Role</label>
+                                    <input
+                                        type="text"
+                                        id="role"
+                                        placeholder="Enter member's role"
+                                        value={role}
+                                        onChange={(e) => setRole(e.target.value)}
+                                    />
+                                </div>
+
+                                {error && <p style={{ color: 'red' }}>{error}</p>}
+
+                                <div className="form-buttons">
+                                    <button type="button" onClick={closeEditModal}>Close</button>
+                                    <button type="submit" disabled={uploading}>
+                                        {uploading ? 'Uploading...' : 'Save Changes'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )
+            }
+
+
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Add New Member</h2>
+                        <form onSubmit={handleSubmitData}>
+                            <div className="form-group">
+                                <label htmlFor="name">Name</label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    placeholder="Enter member's name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="profilePic">Profile Picture</label>
+                                <input
+                                    type="file"
+                                    id="profilePic"
+                                    accept="image/*"
+                                    onChange={handleProfilePicChange}
+                                />
+                                {profilePic && (
+                                    <div className="profile-pic-preview">
+                                        <img src={URL.createObjectURL(profilePic)} alt="Profile Preview" width="100" />
+                                    </div>
+                                )}
+                            </div>
+
+                            {uploading && (
+                                <div className="progress-bar-container">
+                                    <div
+                                        className="progress-bar"
+                                        style={{ width: `${uploadProgress}%` }}
+                                    ></div>
+                                    <p>{Math.round(uploadProgress)}% uploaded</p>
+                                </div>
+                            )}
+
+                            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+                            <div className="form-buttons">
+                                <button type="button" onClick={closeModal}>Close</button>
+                                <button type="submit" disabled={uploading}>
+                                    {uploading ? 'Uploading...' : 'Add Member'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
             <div className="greeting-banner">
                 <h1>{`Welcome back, ${auth.currentUser?.displayName}!`}</h1>
                 <p>It really feels good to see you here again.</p>
@@ -541,30 +835,25 @@ function HomeO() {
             <div className="manage-team-section">
                 <h2>Manage Team Members</h2>
                 <div className="team-grid">
-                    <div className="team-card">
-                        <img src="/assets/team_member.jpg" alt="Team Member" className="team-avatar" />
-                        <div className="team-info">
-                            <h3>John Doe</h3>
-                            <p>Event Manager</p>
+                    {teamMembers.map((member) => (
+                        <div key={member.id} className="team-card">
+                            <img
+                                src={member.profilePicURL || '/assets/team_member.jpg'}
+                                alt="Team Member"
+                                className="team-avatar"
+                            />
+                            <div className="team-info">
+                                <h3>{member.name}</h3>
+                                <p>{member.role || 'No role assigned'}</p>
+                            </div>
+                            <div className="team-actions">
+                                <button className="edit-button" onClick={() => openEditModal(member.id)}>Edit</button>
+                                <button className="remove-button" onClick={() => handleRemoveMember(member.id)}>Remove</button>
+                            </div>
                         </div>
-                        <div className="team-actions">
-                            <button className="edit-button">Edit</button>
-                            <button className="remove-button">Remove</button>
-                        </div>
-                    </div>
-                    <div className="team-card">
-                        <img src="/assets/team_member.jpg" alt="Team Member" className="team-avatar" />
-                        <div className="team-info">
-                            <h3>Jane Smith</h3>
-                            <p>Marketing Lead</p>
-                        </div>
-                        <div className="team-actions">
-                            <button className="edit-button">Edit</button>
-                            <button className="remove-button">Remove</button>
-                        </div>
-                    </div>
+                    ))}
                 </div>
-                <button className="add-team-button">Add Team Member</button>
+                <button className="add-team-button" onClick={openModal}>Add Team Member</button>
             </div>
             <div className="roles-permissions-section">
                 <h2>Roles and Permissions</h2>
