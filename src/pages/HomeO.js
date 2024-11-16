@@ -45,6 +45,11 @@ function HomeO() {
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [tasks, setTasks] = useState([]);
+    const [roles, setRoles] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [editingRole, setEditingRole] = useState(null);
+    const [roleName, setRoleName] = useState('');
+    const [permissions, setPermissions] = useState(['']);
 
     const openModal = () => setIsModalOpen(true);
 
@@ -538,6 +543,70 @@ function HomeO() {
     };
 
 
+    // Fetch roles from Firestore
+    useEffect(() => {
+        const fetchRoles = async () => {
+            try {
+                const rolesRef = collection(db, 'organizers', user?.uid, 'roles'); // Replace 'userUid' with the actual user ID
+                const snapshot = await getDocs(rolesRef);
+                const rolesList = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setRoles(rolesList);
+            } catch (error) {
+                console.error('Error fetching roles:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchRoles();
+    }, []);
+
+    const handleEditRole = (role) => {
+        setEditingRole(role);
+        setRoleName(role.name);
+        setPermissions(role.permissions || ['']);
+        setShowModal(true);
+    };
+
+    const handleSaveRole = async () => {
+        try {
+            if (editingRole) {
+                const roleDoc = doc(db, 'organizers', 'userUid', 'roles', editingRole.id);
+                await updateDoc(roleDoc, {
+                    name: roleName,
+                    permissions,
+                });
+            } else {
+                const rolesRef = collection(db, 'organizers', user?.uid, 'roles');
+                await addDoc(rolesRef, {
+                    name: roleName,
+                    permissions,
+                });
+            }
+            setShowModal(false);
+            setEditingRole(null);
+            setRoleName('');
+            setPermissions(['']);
+        } catch (error) {
+            console.error('Error saving role:', error);
+        }
+    };
+
+    const handleAddPermission = () => {
+        setPermissions([...permissions, '']);
+    };
+
+    const handlePermissionChange = (index, value) => {
+        const updatedPermissions = [...permissions];
+        updatedPermissions[index] = value;
+        setPermissions(updatedPermissions);
+    };
+
+
+
 
 
     const revenueData = {
@@ -946,26 +1015,66 @@ function HomeO() {
             <div className="roles-permissions-section">
                 <h2>Roles and Permissions</h2>
                 <div className="roles-grid">
-                    <div className="role-card">
-                        <h3>Event Manager</h3>
-                        <ul className="permissions-list">
-                            <li>Manage Events</li>
-                            <li>Assign Tasks</li>
-                            <li>View Reports</li>
-                        </ul>
-                        <button className="edit-role-button">Edit Role</button>
-                    </div>
-                    <div className="role-card">
-                        <h3>Marketing Lead</h3>
-                        <ul className="permissions-list">
-                            <li>Manage Marketing Campaigns</li>
-                            <li>View Reports</li>
-                            <li>Send Notifications</li>
-                        </ul>
-                        <button className="edit-role-button">Edit Role</button>
-                    </div>
+                    {roles.map((role) => (
+                        <div key={role.id} className="role-card">
+                            <h3>{role.name}</h3>
+                            <ul className="permissions-list">
+                                {role.permissions.map((permission, index) => (
+                                    <li key={index}>{permission}</li>
+                                ))}
+                            </ul>
+                            <button
+                                className="edit-role-button"
+                                onClick={() => handleEditRole(role)}
+                            >
+                                Edit Role
+                            </button>
+                        </div>
+                    ))}
                 </div>
-                <button className="add-role-button">Add New Role</button>
+                <button
+                    className="add-role-button"
+                    onClick={() => {
+                        setEditingRole(null);
+                        setRoleName('');
+                        setPermissions(['']);
+                        setShowModal(true);
+                    }}
+                >
+                    Add New Role
+                </button>
+
+                {/* Modal */}
+                {showModal && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <h3>{editingRole ? 'Edit Role' : 'Add New Role'}</h3>
+                            <div className="form-group">
+                                <label>Role Name</label>
+                                <input
+                                    type="text"
+                                    value={roleName}
+                                    onChange={(e) => setRoleName(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Permissions</label>
+                                {permissions.map((permission, index) => (
+                                    <input
+                                        key={index}
+                                        type="text"
+                                        value={permission}
+                                        onChange={(e) => handlePermissionChange(index, e.target.value)}
+                                        placeholder="Enter permission"
+                                    />
+                                ))}
+                                <button onClick={handleAddPermission}>Add Permission</button>
+                            </div>
+                            <button onClick={handleSaveRole}>Save</button>
+                            <button onClick={() => setShowModal(false)}>Cancel</button>
+                        </div>
+                    </div>
+                )}
             </div>
             <div className="event-promotion">
                 <h1>Event Promotion</h1>
