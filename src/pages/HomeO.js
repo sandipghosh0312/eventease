@@ -10,7 +10,7 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 import InsightsIcon from '@mui/icons-material/Insights';
 import AdUnitsIcon from '@mui/icons-material/AdUnits';
 import { auth, db, storage } from "../firebase";
-import { collection, query, where, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, addDoc } from 'firebase/firestore';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 function HomeO() {
@@ -38,6 +38,13 @@ function HomeO() {
     const [teamMembers, setTeamMembers] = useState([]);
     const [selectedMemberId, setSelectedMemberId] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [taskName, setTaskName] = useState('');
+    const [assignedTo, setAssignedTo] = useState('');
+    const [dueDate, setDueDate] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [tasks, setTasks] = useState([]);
 
     const openModal = () => setIsModalOpen(true);
 
@@ -205,23 +212,23 @@ function HomeO() {
     const handleRemoveMember = async (memberId) => {
         const confirmDelete = window.confirm('Are you sure you want to delete this team member?');
         if (confirmDelete) {
-          try {
-            // Reference to the team member's document
-            const memberRef = doc(db, 'organizers', 'userUid', 'team-members', memberId); // Replace 'userUid' with actual user's UID
-            
-            // Delete the document
-            await deleteDoc(memberRef);
-    
-            // Update the state by filtering out the deleted member
-            setTeamMembers((prevMembers) => prevMembers.filter((member) => member.id !== memberId));
-    
-            alert('Team member deleted successfully.');
-          } catch (error) {
-            console.error('Error deleting team member:', error);
-            alert('Failed to delete the team member. Please try again.');
-          }
+            try {
+                // Reference to the team member's document
+                const memberRef = doc(db, 'organizers', user?.uid, 'team-members', memberId);
+
+                // Delete the document
+                await deleteDoc(memberRef);
+
+                // Update the state by filtering out the deleted member
+                setTeamMembers((prevMembers) => prevMembers.filter((member) => member.id !== memberId));
+
+                alert('Team member deleted successfully.');
+            } catch (error) {
+                console.error('Error deleting team member:', error);
+                alert('Failed to delete the team member. Please try again.');
+            }
         }
-      };
+    };
 
 
 
@@ -306,6 +313,60 @@ function HomeO() {
             console.error("Error rejecting registration:", error);
         }
     };
+
+    const handleAssignTask = async (e) => {
+        e.preventDefault();
+        if (!taskName || !assignedTo || !dueDate) {
+            setErrorMessage('Please fill in all fields.');
+            return;
+        }
+
+        setLoading(true);
+        setErrorMessage('');
+        setSuccessMessage('');
+
+        try {
+            const taskRef = collection(db, 'organizers', user?.uid, 'tasks');
+            await addDoc(taskRef, {
+                taskName,
+                assignedTo,
+                dueDate,
+                createdAt: new Date().toISOString(),
+                progress: 0,
+            });
+
+            setSuccessMessage('Task assigned successfully!');
+            setTaskName('');
+            setAssignedTo('');
+            setDueDate('');
+        } catch (error) {
+            console.error('Error assigning task:', error);
+            setErrorMessage('Failed to assign task. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Fetch tasks from Firestore
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const tasksRef = collection(db, 'organizers', user?.uid, 'tasks');
+                const snapshot = await getDocs(tasksRef);
+                const taskList = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setTasks(taskList);
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTasks();
+    }, []);
 
 
     useEffect(() => {
@@ -790,46 +851,73 @@ function HomeO() {
             </div>
             <div className="assign-task-section">
                 <h2>Assign Task</h2>
-                <div className="task-form">
+                <form className="task-form" onSubmit={handleAssignTask}>
                     <div className="form-group">
                         <label htmlFor="taskName">Task Name</label>
-                        <input type="text" id="taskName" placeholder="Enter task name" />
+                        <input
+                            type="text"
+                            id="taskName"
+                            placeholder="Enter task name"
+                            value={taskName}
+                            onChange={(e) => setTaskName(e.target.value)}
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="assignedTo">Assign To</label>
-                        <select id="assignedTo">
-                            <option>Select team member</option>
-                            <option>John Doe</option>
-                            <option>Jane Smith</option>
-                            <option>Mark Taylor</option>
+                        <select
+                            id="assignedTo"
+                            value={assignedTo}
+                            onChange={(e) => setAssignedTo(e.target.value)}
+                        >
+                            <option value="">Select team member</option>
+                            {teamMembers.map((member) => (
+                                <option key={member.id} value={member.name}>
+                                    {member.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="dueDate">Due Date</label>
-                        <input type="date" id="dueDate" />
+                        <input
+                            type="date"
+                            id="dueDate"
+                            value={dueDate}
+                            onChange={(e) => setDueDate(e.target.value)}
+                        />
                     </div>
-                    <button className="assign-button">Assign Task</button>
-                </div>
+                    <button
+                        className="assign-button"
+                        type="submit"
+                        disabled={loading}
+                    >
+                        {loading ? 'Assigning...' : 'Assign Task'}
+                    </button>
+                </form>
+                {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             </div>
             <div className="track-progress-section">
                 <h2>Track Progress</h2>
                 <div className="progress-grid">
-                    <div className="progress-card">
-                        <h3>Task Name</h3>
-                        <p>Assigned to: John Doe</p>
-                        <p>Due Date: August 25, 2024</p>
-                        <div className="progress-bar">
-                            <div className="progress" style={{ width: "75%" }}>75%</div>
+                    {tasks.map((task) => (
+                        <div key={task.id} className="progress-card">
+                            <h3>{task.taskName}</h3>
+                            <p>Assigned to: {task.assignedTo}</p>
+                            <p>Due Date: {task.dueDate}</p>
+                            <div className="progress-bar">
+                                <div
+                                    className="progress"
+                                    style={{
+                                        width: `${task.progressPercentage || 0}%`,
+                                        backgroundColor: task.progressPercentage === 100 ? 'green' : 'blue',
+                                    }}
+                                >
+                                    {task.progressPercentage || 0}%
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="progress-card">
-                        <h3>Task Name</h3>
-                        <p>Assigned to: Jane Smith</p>
-                        <p>Due Date: August 26, 2024</p>
-                        <div className="progress-bar">
-                            <div className="progress" style={{ width: "50%" }}>50%</div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
             <div className="manage-team-section">
