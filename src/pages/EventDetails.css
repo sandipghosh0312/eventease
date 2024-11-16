@@ -1,0 +1,181 @@
+/* Event Details Page Styling */
+.event-details {
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 104px;
+    margin-left: 300px;
+  }
+  
+  /* Top Card */
+  .top-card {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .banner-image-container {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .top-card-content {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .event-picture .event-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .event-name-section {
+    margin-left: 20px;
+    flex-grow: 1;
+  }
+  
+  .event-name {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .event-website {
+    color: #4A90E2;
+    text-decoration: none;
+    margin-top: 15px !important;
+  }
+  
+  .register-button-container {
+    margin-left: auto;
+  }
+  
+  .register-button {
+    padding: 15px 20px;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px
+  }
+  
+  .register-button:hover {
+    background-color: #357ABD;
+  }
+  
+  /* Main Layout */
+  .main-layout {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .left-sidebar {
+    width: 300px;
+    margin-right: 20px;
+  }
+  
+  .main-content {
+    flex: 1;
+  }
+  
+  /* Sidebar Cards */
+  .sidebar-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .sidebar-card > h2 {
+    padding-bottom: 10px;
+  }
+  
+  .gallery-images img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+  
+  .social-links a {
+    color: #4A90E2;
+    text-decoration: none;
+    display: block;
+    margin-top: 5px;
+  }
+  
+  /* Main Cards */
+  .main-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .main-card > h2 {
+    padding-bottom: 10px;
+  }
+  
+  .location-link {
+    color: #4A90E2;
+    text-decoration: none;
+  }
+  
+  /* Contact Form */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .contact-button {
+    padding: 10px 20px;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .contact-button:hover {
+    background-color: #357ABD;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .main-layout {
+      flex-direction: column;
+    }
+  
+    .left-sidebar {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+  

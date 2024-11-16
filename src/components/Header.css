@@ -1,0 +1,192 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff; /* White background */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 10px 20px;
+  z-index: 1000; /* Ensure it stays on top */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff; /* Clean white background */
+  border: 1px solid #E0E0E0; /* Light gray border */
+  border-radius: 30px; /* Rounded corners */
+  padding: 8px 16px; /* Comfortable padding */
+  width: 100%;
+  max-width: 450px; /* Adjust width based on layout */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+}
+
+.searchBar:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+  background-color: #f8f8f8; /* Slightly darker background on hover */
+}
+
+.searchBar input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 16px;
+  color: #333333; /* Dark gray text */
+  flex-grow: 1; /* Input takes up remaining space */
+  margin-left: 12px; /* Space between icon and input */
+  padding: 6px 0; /* Adjust padding for better text alignment */
+}
+
+.searchBar input::placeholder {
+  color: #B0B0B0; /* Soft gray placeholder */
+}
+
+.searchBar .MuiSvgIcon-root {
+  color: #4A90E2; /* Blue icon */
+  font-size: 20px; /* Icon size */
+  transition: color 0.3s ease; /* Smooth transition for icon color */
+}
+
+.searchBar:hover .MuiSvgIcon-root {
+  color: #333333; /* Darker icon on hover */
+}
+
+/* Suggestion Box Container */
+.suggestion-box {
+  position: absolute;
+  background-color: #ffffff; /* White background */
+  border: 1px solid #E0E0E0; /* Light gray border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Drop shadow for depth */
+  border-radius: 8px; /* Smooth, rounded corners */
+  margin-top: 10px; /* Spacing below the search bar */
+  width: 100%;
+  max-width: 450px; /* Match the search bar width */
+  z-index: 1000; /* Ensure it stays on top */
+  display: none; /* Hidden by default */
+  top: 80px;
+  align-self: center;
+}
+
+.suggestion-box.active {
+  display: block; /* Show when active */
+}
+
+/* Suggestion Item */
+.suggestion-item {
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #333333; /* Dark gray text color */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover Effect for Suggestion Item */
+.suggestion-item:hover {
+  background-color: #f0f0f0; /* Light gray background on hover */
+}
+
+/* Divider between suggestions */
+.suggestion-divider {
+  height: 1px;
+  background-color: #E0E0E0;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .suggestion-box {
+      max-width: 100%; /* Full width on smaller screens */
+  }
+
+  .suggestion-item {
+      font-size: 12px; /* Smaller font size on smaller screens */
+  }
+}
+
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .searchBar {
+      max-width: 300px; /* Adjust width for smaller screens */
+  }
+
+  .searchBar input {
+      font-size: 14px; /* Smaller font size for input */
+  }
+}
+
+
+/* Container for the right side of the header */
+.header__right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between items */
+  }
+  
+  /* Individual navigation items */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .nav span {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333; /* Dark gray text color */
+  }
+  
+  .nav .MuiSvgIcon-root {
+    color: #4A90E2; /* Icon color matching your theme */
+    font-size: 24px;
+  }
+  
+  /* Hover effect for navigation items */
+  .nav:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Avatar styling */
+  .header__right .Avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #4A90E2;
+    transition: border-color 0.3s ease;
+  }
+  
+  .header__right .Avatar:hover {
+    border-color: #F5A623; /* Change border color on hover */
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .header__right {
+      gap: 15px;
+    }
+  
+    .nav {
+      padding: 8px 12px;
+    }
+  
+    .nav span {
+      font-size: 14px;
+    }
+  
+    .header__right .Avatar {
+      width: 35px;
+      height: 35px;
+    }
+  }
+  

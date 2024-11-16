@@ -1,0 +1,96 @@
+.account-settings {
+    margin-left: 300px;
+    margin-top: 104px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.account-header {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.account-header h2 {
+    font-size: 32px;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.account-header p {
+    font-size: 16px;
+    color: #666666;
+}
+
+.account-content {
+    width: 100%;
+    max-width: 800px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.settings-section {
+    margin-bottom: 40px;
+}
+
+.settings-section h3 {
+    font-size: 24px;
+    color: #1976d2; /* Blue color for section titles */
+    margin-bottom: 15px;
+}
+
+.delete-button {
+    color: #d32f2f;
+    border-color: #d32f2f;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #fce4e4;
+    border-color: #d32f2f;
+}
+
+.dialogHeader {
+    padding: 15px;
+}
+
+.dialogBody {
+    font-family: 'poppins', sans-seriF;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.dialogButton {
+    align-self: auto;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 15px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .account-settings {
+        margin-left: 0;
+        margin-top: 0;
+        padding: 10px;
+    }
+
+    .account-content {
+        padding: 15px;
+    }
+}

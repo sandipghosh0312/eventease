@@ -1,0 +1,91 @@
+/* General Styles for Feedback Page */
+.feedback-page {
+    padding: 20px;
+    background-color: #f8f9fb; /* Light gray background */
+    color: #333333;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 104px;
+    margin-left: 300px;
+}
+
+/* Hero Section */
+.feedback-hero {
+    text-align: center;
+    background-color: #f5a623; /* Orange background for emphasis */
+    color: #ffffff;
+    padding: 60px 20px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-hero h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.feedback-hero p {
+    font-size: 18px;
+}
+
+/* Feedback Form */
+.feedback-form-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: #ffffff; /* White form background */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-form .form-group {
+    margin-bottom: 20px;
+}
+
+.feedback-form label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.feedback-form input, 
+.feedback-form select, 
+.feedback-form textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.feedback-form input:focus, 
+.feedback-form select:focus, 
+.feedback-form textarea:focus {
+    border-color: #4a90e2; /* Focus color */
+}
+
+.feedback-form .submit-btn {
+    background-color: #4a90e2;
+    color: #ffffff;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.feedback-form .submit-btn:hover {
+    background-color: #3b7bc4;
+    transform: scale(1.05);
+}

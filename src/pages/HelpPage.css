@@ -1,0 +1,159 @@
+/* General Styles for Help Page */
+.help-page {
+    padding: 20px;
+    background-color: #ffffff; /* White background */
+    color: #333333;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 104px;
+    margin-left: 300px;
+}
+
+/* Hero Section */
+.help-hero-section {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #4A90E2, #56C7F9); /* Theme Blue Gradient */
+    border-radius: 15px;
+    margin-bottom: 40px;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.help-hero-section h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.help-hero-section p {
+    font-size: 18px;
+}
+
+/* FAQ Section */
+.faq-section {
+    margin-bottom: 60px;
+}
+
+.faq-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.faq-list {
+    border-top: 1px solid #dddddd;
+}
+
+.faq-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #dddddd;
+}
+
+.faq-item h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.faq-item p {
+    font-size: 16px;
+    color: #666666;
+    display: none; /* Hide the answer initially */
+}
+
+/* Support Contact Section */
+.support-contact-section {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.support-contact-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.contact-support-btn {
+    padding: 12px 20px;
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.2);
+}
+
+.contact-support-btn:hover {
+    background-color: #56C7F9;
+    transform: scale(1.05);
+}
+
+/* User Guide Section */
+.user-guide-section {
+    margin-bottom: 60px;
+}
+
+.user-guide-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.guide-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.guide-item {
+    background-color: #f3f3f3;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.guide-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.guide-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.guide-item h3 {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    color: #333333;
+}
+
+.guide-item p {
+    font-size: 16px;
+    padding: 0 10px 20px;
+    color: #666666;
+}
+
+.view-guide-btn {
+    padding: 10px 15px;
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.view-guide-btn:hover {
+    background-color: #56C7F9;
+    transform: scale(1.05);
+}

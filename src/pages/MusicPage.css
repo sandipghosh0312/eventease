@@ -1,0 +1,202 @@
+/* General Styles for Music Page */
+.music-page {
+    padding: 20px;
+    background-color: #ffffff; /* White background for clean look */
+    color: #333333;
+    font-family: 'Poppins', sans-serif; /* Professional font */
+    margin-top: 104px;
+    margin-left: 300px;
+}
+
+/* Hero Section */
+.music-hero-section {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #6A1B9A, #8E24AA); /* Vibrant purple gradient */
+    border-radius: 15px;
+    margin-bottom: 40px;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.music-hero-section h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.music-hero-section p {
+    font-size: 20px;
+}
+
+/* Genres Section */
+.genres-section {
+    margin-bottom: 60px;
+}
+
+.genres-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.genres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.genre-card {
+    background-color: #f3f3f3;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.genre-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.genre-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.genre-card h3 {
+    font-size: 20px;
+    padding: 10px;
+    color: #333333;
+}
+
+/* Artists Section */
+.artists-section {
+    margin-bottom: 60px;
+}
+
+.artists-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.artists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.artist-card {
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.artist-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.artist-image {
+    width: 40%;
+    height: auto;
+    object-fit: cover;
+}
+
+.artist-info {
+    padding: 15px;
+    flex: 1;
+    text-align: left;
+}
+
+.artist-info h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.artist-info p {
+    font-size: 16px;
+    color: #666666;
+}
+
+/* Upcoming Music Events Section */
+.upcoming-music-events {
+    margin-bottom: 60px;
+}
+
+.upcoming-music-events h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.event-card {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.event-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.event-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.event-info h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.event-info p {
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 10px;
+}
+
+.buy-tickets-btn_music {
+    padding: 12px 20px;
+    background-color: #6A1B9A;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(106, 27, 154, 0.2);
+}
+
+.buy-tickets-btn:hover {
+    background-color: #8E24AA;
+    transform: scale(1.05);
+}
