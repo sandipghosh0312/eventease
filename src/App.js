@@ -19,6 +19,7 @@ import AccountSettings from './pages/AccountSettings';
 import { auth } from "./firebase";
 import { onAuthStateChanged } from 'firebase/auth';
 import EventDetails from './pages/EventDetails';
+import CampaignPerformance from './pages/CampaignPerformance';
 
 // A simple ProtectedRoute component
 const ProtectedRoute = ({ user, children }) => {
@@ -136,6 +137,14 @@ const router = (user) => createBrowserRouter([
     element: (
       <ProtectedRoute user={user}>
         <AccountSettings />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: 'campaign-performance',
+    element: (
+      <ProtectedRoute user={user}>
+        <CampaignPerformance />
       </ProtectedRoute>
     ),
   },

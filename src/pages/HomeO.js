@@ -12,6 +12,9 @@ import AdUnitsIcon from '@mui/icons-material/AdUnits';
 import { auth, db, storage } from "../firebase";
 import { collection, query, where, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, addDoc } from 'firebase/firestore';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import CreateCampaignModal from "../components/CreateCampaignModal";
+import ManageMaterialsModal from "../components/ManageMaterialsModal";
+import { Link } from 'react-router-dom';
 
 function HomeO() {
     const [eventsAttended, setEventsAttended] = useState(0);
@@ -50,6 +53,8 @@ function HomeO() {
     const [editingRole, setEditingRole] = useState(null);
     const [roleName, setRoleName] = useState('');
     const [permissions, setPermissions] = useState(['']);
+    const [isCampaignModalOpen, setCampaignModalOpen] = useState(false);
+    const [isPModalOpen, setIsPModalOpen] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
 
@@ -542,6 +547,16 @@ function HomeO() {
         }
     };
 
+    const handleCreateCampaign = async (campaignData) => {
+        try {
+            await addDoc(collection(db, "campaigns"), { ...campaignData, createdBy: user?.uid });
+            alert("Campaign created successfully!");
+        } catch (error) {
+            console.error("Error creating campaign: ", error);
+            alert("Failed to create campaign. Please try again.");
+        }
+    };
+
 
     // Fetch roles from Firestore
     useEffect(() => {
@@ -652,6 +667,11 @@ function HomeO() {
 
     return (
         <div className="homeO">
+
+            <ManageMaterialsModal
+                isOpen={isPModalOpen}
+                onClose={() => setIsPModalOpen(false)}
+            />
 
             {
                 isEditModalOpen && (
@@ -1083,19 +1103,25 @@ function HomeO() {
                         <CampaignIcon className="promo-icon" />
                         <h2>Create Campaign</h2>
                         <p>Design and launch new marketing campaigns to boost event visibility.</p>
-                        <button>Create Now</button>
+                        <button onClick={() => setCampaignModalOpen(true)}>Create Now</button>
+
+                        <CreateCampaignModal
+                            isOpen={isCampaignModalOpen}
+                            onClose={() => setCampaignModalOpen(false)}
+                            onCreate={handleCreateCampaign}
+                        />
                     </div>
                     <div className="overview-card">
                         <AdUnitsIcon className="promo-icon" />
                         <h2>Promotional Materials</h2>
                         <p>Upload and manage banners, posters, and other promotional content.</p>
-                        <button>Manage Materials</button>
+                        <button onClick={() => setIsPModalOpen(true)}>Manage Materials</button>
                     </div>
                     <div className="overview-card">
                         <InsightsIcon className="promo-icon" />
                         <h2>Campaign Performance</h2>
                         <p>Track the performance of your campaigns with detailed analytics.</p>
-                        <button>View Insights</button>
+                        <button><Link to="/campaign-performance" style={{ color: "white", textDecoration: "none" }}>View Insights</Link></button>
                     </div>
                 </div>
             </div>
